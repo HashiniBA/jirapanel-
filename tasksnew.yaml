@@ -1,0 +1,350 @@
+bug_collection_task:
+  description: |
+    Execute comprehensive bug intelligence gathering from the Jira SCRUM project. Your mission is to:
+    
+    1. **Complete Bug Discovery**: Use advanced JQL queries to identify ALL open bugs across the entire project
+    2. **Metadata Extraction**: For each bug, extract complete metadata including:
+       - Issue key, summary, and detailed description
+       - Priority level, severity classification, and status
+       - Assignee, reporter, and creation/update timestamps
+       - Labels, components, and fix versions
+       - Environment details and affected versions
+    3. **Reproduction Analysis**: Analyze bug descriptions to extract:
+       - Steps to reproduce the issue
+       - Expected vs actual behavior
+       - Browser/device compatibility information
+       - Error messages and stack traces
+    4. **Pattern Recognition**: Identify common patterns across bugs:
+       - Recurring components with issues
+       - Similar error types or symptoms
+       - Temporal clustering of bug reports
+    
+    Deliver a structured intelligence report that serves as the foundation for all subsequent analysis.
+  expected_output: |
+    Write your complete final answer to the file 'bug_intelligence_output.txt' and also display it.
+    
+    A comprehensive bug intelligence dossier in structured format containing:
+    ```
+    BUG_INTELLIGENCE_REPORT:
+      total_bugs_found: [number]
+      collection_timestamp: [ISO datetime]
+      bugs:
+        - bug_id: [SCRUM-XXX]
+          summary: [bug title]
+          description: [full description]
+          priority: [High/Medium/Low]
+          severity: [Critical/Major/Minor]
+          status: [Open/In Progress/etc]
+          assignee: [name/email]
+          reporter: [name/email]
+          created: [datetime]
+          updated: [datetime]
+          labels: [list of labels]
+          components: [affected components]
+          reproduction_steps: [extracted steps]
+          error_messages: [any error details]
+          environment: [browser/device info]
+      patterns_identified:
+        - component_hotspots: [components with most bugs]
+        - common_error_types: [recurring error patterns]
+        - temporal_analysis: [bug creation timeline]
+    ```
+  output_file: "bug_intelligence_output.txt"
+
+context_enrichment_task:
+  description: |
+    Transform the raw bug intelligence into rich contextual knowledge by conducting deep relationship analysis.
+    Your comprehensive mission includes:
+    
+    1. **Relationship Mapping**: For each identified bug, discover and map ALL related Jira entities:
+       - Parent epics and their business objectives
+       - Associated user stories and acceptance criteria
+       - Linked tasks, sub-tasks, and technical requirements
+       - Related bugs and their resolution history
+       - Blocking/blocked relationships and dependencies
+    
+    2. **Business Context Analysis**: Extract business intelligence from linked items:
+       - Epic-level business goals and success metrics
+       - User story value propositions and user personas
+       - Feature priority and business impact assessment
+       - Customer-facing vs internal system impacts
+    
+    3. **Technical Dependency Mapping**: Analyze technical relationships:
+       - Component interdependencies affected by bugs
+       - System integration points involved
+       - Third-party service dependencies
+       - Database and API interaction patterns
+    
+    4. **Codebase Analysis**: Use the analyze_entire_codebase tool to examine the GitHub repository:
+       - Repository structure and recent commits
+       - Relevant files related to the bug
+       - Code patterns and potential issues
+       - Dependencies and third-party integrations
+    
+    5. **Historical Context Research**: Investigate historical patterns:
+       - Previous similar issues and their resolutions
+       - Recurring problem areas in the codebase
+       - Team knowledge and expertise distribution
+       - Resolution time patterns for similar bugs
+    
+    IMPORTANT: Your final answer MUST include the complete output from the analyze_entire_codebase tool.
+    Create a comprehensive knowledge graph that reveals the true scope and impact of each bug.
+  expected_output: |
+    Write your complete final answer to the file 'context_analysis_output.txt' and also display it.
+    
+    An enriched contextual intelligence report structured as:
+    ```
+    CONTEXTUAL_INTELLIGENCE_REPORT:
+      enrichment_timestamp: [ISO datetime]
+      bugs_analyzed: [number]
+      contextual_analysis:
+        - bug_id: [SCRUM-XXX]
+          business_context:
+            parent_epic: [epic details and business goals]
+            user_stories: [list of related stories with acceptance criteria]
+            business_impact: [customer/revenue impact assessment]
+            stakeholders: [affected business users/teams]
+          technical_context:
+            linked_tasks: [development tasks and technical requirements]
+            dependencies: [blocking/blocked items and reasons]
+            components_affected: [system components and interaction points]
+            integration_points: [APIs, databases, third-party services]
+          codebase_analysis:
+            repository_overview: [complete output from analyze_entire_codebase tool]
+            relevant_files: [files potentially related to the bug]
+            recent_commits: [recent changes that might be relevant]
+            dependencies: [third-party libraries and integrations]
+          historical_context:
+            similar_issues: [previous related bugs and resolutions]
+            resolution_patterns: [typical fix approaches for this type]
+            team_expertise: [team members with relevant experience]
+            risk_factors: [potential complications based on history]
+      relationship_graph:
+        epic_to_bug_mapping: [epic -> bugs relationships]
+        story_to_bug_mapping: [user story -> bugs relationships]
+        component_interaction_map: [how bugs affect system components]
+        dependency_chains: [critical path analysis for bug fixes]
+    ```
+  output_file: "context_analysis_output.txt"
+
+code_analysis_task:
+  description: |
+    Conduct elite-level forensic analysis of the entire GitHub codebase to uncover the technical DNA of each bug.
+    Your deep technical investigation must include:
+    
+    1. **Comprehensive Code Scanning**: Systematically analyze the entire repository:
+       - Repository structure and architecture patterns
+       - All source code files, configuration files, and dependencies
+       - Build scripts, deployment configurations, and environment settings
+       - Documentation, README files, and inline code comments
+    
+    2. **Bug-Specific Code Forensics**: For each bug, perform targeted analysis:
+       - Identify code sections likely related to the reported issue
+       - Analyze recent commits and changes in relevant areas
+       - Examine error handling patterns and logging mechanisms
+       - Review test coverage for affected functionality
+    
+    3. **Root Cause Investigation**: Apply advanced debugging techniques:
+       - Static code analysis to identify potential issues
+       - Dependency analysis for third-party library conflicts
+       - Configuration analysis for environment-specific problems
+       - Architecture review for design pattern violations
+    
+    4. **Solution Architecture**: Design comprehensive technical solutions:
+       - MUST call generate_bug_solution tool with bug context to create detailed step-by-step solutions
+       - Include the complete output from generate_bug_solution tool in your final answer
+       - Do not summarize or truncate the tool output
+       - Multiple solution approaches with pros/cons analysis
+       - Implementation complexity and effort estimation
+       - Testing strategy and quality assurance recommendations
+       - Performance and security impact assessment
+       - Refactoring opportunities and technical debt reduction
+    
+    5. **Code Quality Assessment**: Evaluate overall codebase health:
+       - Identify anti-patterns and code smells
+       - Assess maintainability and extensibility
+       - Review coding standards compliance
+       - Suggest architectural improvements
+    
+    Deliver technical solutions that not only fix bugs but improve overall system quality.
+  expected_output: |
+    Write your complete final answer to the file 'code_forensics_output.txt' and also display it.
+    
+    CRITICAL: You MUST use the generate_bug_solution tool and include its COMPLETE output in your final answer.
+    
+    Structure your final answer as:
+    
+    # TECHNICAL FORENSICS REPORT
+    
+    ## CODE ANALYSIS
+    [Your technical analysis here]
+    
+    ## AI-GENERATED BUG SOLUTION
+    [Complete output from generate_bug_solution tool - include everything]
+    
+    ## ADDITIONAL RECOMMENDATIONS
+    [Your additional technical recommendations]
+    
+    A comprehensive technical forensics and solution architecture report:
+    ```
+    TECHNICAL_FORENSICS_REPORT:
+      analysis_timestamp: [ISO datetime]
+      repository_analyzed: [repo name and commit hash]
+      codebase_overview:
+        total_files_analyzed: [number]
+        languages_detected: [list of programming languages]
+        architecture_pattern: [MVC, microservices, etc.]
+        key_frameworks: [React, Spring, etc.]
+        dependencies_count: [number of external dependencies]
+      
+      bug_specific_analysis:
+        - bug_id: [SCRUM-XXX]
+          root_cause_analysis:
+            primary_cause: [main technical reason for the bug]
+            contributing_factors: [secondary issues that enabled the bug]
+            code_locations: [specific files and line numbers involved]
+            recent_changes: [relevant commits that may have introduced the issue]
+          
+          technical_solution:
+            ai_generated_solution: [complete output from generate_bug_solution tool]
+            recommended_approach: [primary solution strategy]
+            alternative_approaches: [other possible solutions with trade-offs]
+            implementation_steps: [detailed step-by-step fix instructions]
+            files_to_modify: [list of files requiring changes]
+            testing_strategy: [unit tests, integration tests, manual testing needed]
+            rollback_plan: [how to revert changes if issues arise]
+          
+          impact_assessment:
+            performance_impact: [expected performance changes]
+            security_implications: [security considerations]
+            compatibility_concerns: [backward compatibility issues]
+            deployment_requirements: [special deployment considerations]
+          
+          quality_improvements:
+            refactoring_opportunities: [code improvements beyond the bug fix]
+            technical_debt_reduction: [how this fix improves overall code quality]
+            preventive_measures: [how to prevent similar bugs in the future]
+      
+      codebase_health_assessment:
+        code_quality_score: [overall quality rating]
+        maintainability_index: [how easy the code is to maintain]
+        technical_debt_areas: [areas needing improvement]
+        security_vulnerabilities: [potential security issues found]
+        performance_bottlenecks: [performance improvement opportunities]
+    ```
+  output_file: "code_forensics_output.txt"
+
+reporting_task:
+  description: |
+    Synthesize all intelligence into executive-grade reports that drive immediate action and strategic decisions.
+    Your comprehensive reporting mission encompasses:
+    
+    1. **Multi-Audience Report Generation**: Create tailored reports for different stakeholders:
+       - Executive summary for C-level and project sponsors
+       - Technical roadmap for development teams and architects
+       - Project management dashboard for Scrum Masters and PMs
+       - Quality assurance checklist for testing teams
+    
+    2. **Jira Integration and Updates**: Seamlessly integrate findings back into workflow:
+       - MUST call add_jira_comment tool for each bug found to update Jira tickets
+       - Add technical solution details and implementation guidance to Jira comments
+       - Include AI analysis summary in Jira ticket comments
+       - Update each bug ticket with comprehensive analysis results
+       - Add relevant labels and components for better organization
+    
+    3. **Strategic Recommendations**: Provide high-level insights:
+       - Resource allocation recommendations based on bug complexity
+       - Timeline estimates for resolution with confidence intervals
+       - Risk mitigation strategies for high-impact bugs
+       - Process improvement suggestions to prevent future issues
+       - Team training recommendations based on identified knowledge gaps
+    
+    4. **Comprehensive Report Generation**: Use the generate_comprehensive_report tool to create a detailed bug resolution handbook:
+       - MUST call generate_comprehensive_report tool with all analysis data
+       - Include the complete output from this tool in your final answer
+       - Do not summarize or truncate the tool output
+    
+    5. **Knowledge Base Creation**: Build institutional knowledge:
+       - Document common bug patterns and their solutions
+       - Create troubleshooting guides for similar future issues
+       - Establish best practices based on analysis findings
+       - Build searchable knowledge repository for team reference
+    
+    6. **Continuous Improvement Framework**: Establish feedback loops:
+       - Metrics for tracking bug resolution effectiveness
+       - Process improvement recommendations
+       - Tool and automation suggestions
+       - Team capability development plans
+    
+    IMPORTANT: Your final answer MUST include the complete output from the generate_comprehensive_report tool.
+    Deliver actionable intelligence that transforms bug analysis into business value.
+  expected_output: |
+    Write your complete final answer to the file 'strategic_reporting_output.txt' and also display it.
+    
+    CRITICAL: You MUST use both the generate_comprehensive_report tool AND the add_jira_comment tool.
+    
+    For each bug identified, you MUST:
+    1. Call add_jira_comment tool with the bug ID and a summary of your analysis
+    2. Include the results of add_jira_comment calls in your final answer
+    
+    Structure your final answer as:
+    
+    # STRATEGIC BUG RESOLUTION REPORT
+    
+    ## JIRA UPDATES COMPLETED
+    [Results from add_jira_comment tool calls for each bug]
+    
+    ## COMPREHENSIVE BUG RESOLUTION HANDBOOK
+    [Complete output from generate_comprehensive_report tool - include everything]
+    
+    ## STRATEGIC ANALYSIS
+    
+    A comprehensive multi-layered reporting package:
+    ```
+    STRATEGIC_BUG_ANALYSIS_REPORT:
+      report_timestamp: [ISO datetime]
+      analysis_scope: [summary of bugs analyzed]
+      
+      executive_summary:
+        total_bugs_analyzed: [number]
+        critical_issues_identified: [number of high-priority bugs]
+        business_impact_assessment: [revenue/customer impact summary]
+        recommended_immediate_actions: [top 3 urgent actions needed]
+        resource_requirements: [team members and time needed]
+        expected_resolution_timeline: [realistic completion estimates]
+        risk_factors: [potential complications and mitigation strategies]
+      
+      technical_roadmap:
+        immediate_fixes: [bugs that can be fixed quickly]
+        complex_solutions: [bugs requiring significant development effort]
+        architectural_improvements: [system-wide improvements identified]
+        technical_debt_reduction: [code quality improvements recommended]
+        testing_strategy: [comprehensive testing approach]
+        deployment_plan: [phased rollout strategy for fixes]
+      
+      jira_updates_completed:
+        tickets_updated: [list of updated bug tickets]
+        new_subtasks_created: [breakdown of complex fixes]
+        priority_adjustments: [bugs with changed priority/severity]
+        labels_and_components_added: [improved categorization]
+      
+      process_improvements:
+        prevention_strategies: [how to avoid similar bugs in future]
+        development_process_enhancements: [workflow improvements]
+        quality_assurance_recommendations: [testing process improvements]
+        team_training_needs: [skill development recommendations]
+        tool_and_automation_opportunities: [efficiency improvements]
+      
+      knowledge_base_entries:
+        common_patterns_documented: [reusable solutions created]
+        troubleshooting_guides: [step-by-step problem-solving guides]
+        best_practices_established: [coding and process standards]
+        team_expertise_map: [who knows what for future reference]
+      
+      success_metrics:
+        resolution_time_targets: [expected time to fix each bug]
+        quality_improvement_indicators: [how to measure success]
+        customer_satisfaction_impact: [expected user experience improvements]
+        technical_debt_reduction_metrics: [code quality improvement measures]
+    ```
+  output_file: "strategic_reporting_output.txt"
