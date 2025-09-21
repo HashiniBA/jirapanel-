@@ -263,113 +263,56 @@ def generate_bug_solution(bug_context: Union[str, dict, Any]) -> str:
 
 @tool
 def generate_comprehensive_report(analysis_data: Union[str, dict, Any]) -> str:
-    """Generate comprehensive bug resolution handbook"""
-    
-    # Handle different input types
-    if isinstance(analysis_data, dict):
-        analysis_data = str(analysis_data)
-    elif not analysis_data or analysis_data == "None":
-        analysis_data = "Bug analysis completed"
-    else:
-        analysis_data = str(analysis_data)
-    
-    report = f"""
-# 📋 COMPREHENSIVE BUG RESOLUTION HANDBOOK
+    """Generate comprehensive bug resolution handbook using AI"""
+    try:
+        # Handle different input types
+        if isinstance(analysis_data, dict):
+            context_str = str(analysis_data)
+        elif not analysis_data or analysis_data == "None":
+            context_str = "Bug analysis completed"
+        else:
+            context_str = str(analysis_data)
+        
+        context_str = context_str[:2000]  # Limit context size
+        
+        genai.configure(api_key=os.getenv('GEMINI_API_KEY'))
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        
+        prompt = f"""Create a comprehensive bug resolution handbook based on this analysis data:
+
+{context_str}
+
+Generate a detailed report with these sections:
+- Problem Identification
+- Root Cause Analysis 
+- Detailed Solution Steps
+- Implementation Timeline
+- Resource Allocation
+- Success Criteria
+- Monitoring & Validation
+- Risk Mitigation
+- Expected Outcomes
+- Prevention Measures
+
+Format with proper headings and bullet points. Include specific technical details and actionable steps."""
+        
+        response = model.generate_content(prompt)
+        
+        # Add header with timestamp
+        report = f"""# 📋 COMPREHENSIVE BUG RESOLUTION HANDBOOK
 **Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-## 🐛 PROBLEM IDENTIFICATION
-**Issue:** Facebook Messenger chat widget does not open on product page
-**Impact:** Medium - affects customer support accessibility and conversion rates
-**Environment:** Chrome browser (latest), Desktop and mobile devices
-**Error:** JavaScript error - "FB is not defined"
+{response.text}"""
+        
+        return report
+        
+    except Exception as e:
+        return f"""# 📋 COMPREHENSIVE BUG RESOLUTION HANDBOOK
+**Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
-## 🔍 ROOT CAUSE ANALYSIS
-**Primary Cause:** Facebook SDK initialization failure
-**Technical Details:**
-- Facebook SDK script not loading properly
-- Missing or incorrect Facebook App ID configuration
-- Timing issue with SDK initialization
-- Potential CSP (Content Security Policy) blocking
+**Error:** Unable to generate comprehensive report due to: {str(e)}
 
-## 🛠️ DETAILED SOLUTION STEPS
-
-### Step 1: Verify Facebook SDK Integration
-1. Check if Facebook SDK script is included in HTML head
-2. Verify Facebook App ID is correctly configured
-3. Ensure SDK loads before chat widget initialization
-
-### Step 2: Fix Implementation
-```javascript
-// Add to HTML head
-<script async defer crossorigin="anonymous" 
-  src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0&appId=YOUR_APP_ID">
-</script>
-
-// Initialize chat widget after SDK loads
-window.fbAsyncInit = function() {{
-  FB.init({{
-    appId: 'YOUR_APP_ID',
-    xfbml: true,
-    version: 'v18.0'
-  }});
-}};
-```
-
-### Step 3: Testing Protocol
-1. **Unit Testing:** Verify SDK loads correctly
-2. **Cross-browser Testing:** Chrome, Firefox, Safari, Edge
-3. **Device Testing:** Desktop, mobile, tablet
-4. **Network Testing:** Different connection speeds
-
-### Step 4: Deployment Strategy
-1. Deploy to staging environment first
-2. Conduct thorough QA testing
-3. Monitor error logs for 24 hours
-4. Deploy to production during low-traffic hours
-
-## 📊 IMPLEMENTATION TIMELINE
-- **Day 1:** Code implementation and unit testing
-- **Day 2:** Cross-browser and device testing
-- **Day 3:** Staging deployment and QA
-- **Day 4:** Production deployment and monitoring
-
-## 👥 RESOURCE ALLOCATION
-- **Developer:** 1 senior frontend developer (2 days)
-- **QA Tester:** 1 QA engineer (1 day)
-- **DevOps:** 1 DevOps engineer (0.5 day for deployment)
-
-## 🎯 SUCCESS CRITERIA
-- Chat widget opens successfully on all browsers
-- No JavaScript errors in console
-- Widget loads within 3 seconds
-- 100% functionality across devices
-
-## 🔄 MONITORING & VALIDATION
-- Set up error tracking for Facebook SDK
-- Monitor chat widget usage metrics
-- Track customer support ticket reduction
-- Implement automated testing for widget functionality
-
-## 🚨 RISK MITIGATION
-- **Rollback Plan:** Keep previous version ready for quick revert
-- **Fallback Option:** Alternative contact form if widget fails
-- **Communication:** Notify support team of changes
-- **Documentation:** Update technical documentation
-
-## 📈 EXPECTED OUTCOMES
-- Improved customer support accessibility
-- Increased conversion rates
-- Reduced support tickets
-- Enhanced user experience
-
-## 🔧 PREVENTION MEASURES
-- Implement automated testing for third-party integrations
-- Set up monitoring alerts for JavaScript errors
-- Regular SDK version updates
-- Code review checklist for external dependencies
-"""
-    
-    return report
+Please review the analysis data manually and create a detailed resolution plan."""
 
 @tool
 def add_jira_comment(issue_key: str, comment: str) -> str:
